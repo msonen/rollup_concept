@@ -8,6 +8,8 @@
 #include "sequencer.h"
 #include "smt.h"
 #include "string.h"
+#include <unordered_map>
+
 
 static char _buffer[MAX_LEN_LENGTH];
 
@@ -30,7 +32,8 @@ seq_ret_t sequencer_close(FILE* file)
 }
 
 
-static void sequencer_node(char* str, Csmt<>& mt)
+static void sequencer_node(char* str, Csmt<>& mt, std::unordered_map<uint64_t, std::string>& map,
+		std::unordered_map<uint64_t, std::string>& map2)
 {
 	   const char delim[2] = " ";
 	   char *end_str;
@@ -38,11 +41,14 @@ static void sequencer_node(char* str, Csmt<>& mt)
 	   uint64_t key = strtoull(token, NULL, 10);
 	   token = strtok_r(NULL, delim, &end_str);
 	   mt.insert(key, std::string(token));
+	   map[key] = std::string(token);
+	   map2[key] = std::string(token);
 	   DBG("K: %ld V: %s\n", key, token);
 
 }
 
-seq_ret_t sequencer_publish(FILE* file, Csmt<>& mt)
+seq_ret_t sequencer_publish(FILE* file, Csmt<>& mt, std::unordered_map<uint64_t, std::string>& map,
+		std::unordered_map<uint64_t, std::string>& map2)
 {
 	char *ptr = _buffer;
 	size_t s = MAX_LEN_LENGTH;
@@ -56,10 +62,9 @@ seq_ret_t sequencer_publish(FILE* file, Csmt<>& mt)
 
 	 while(token != NULL)
 	 {
-		 sequencer_node(token, mt);
+		 sequencer_node(token, mt, map, map2);
 		 token = strtok_r(NULL, delim, &end_str);
 	 }
-	 //printf(_buffer);
 	return SEQ_SUCCESS;
 
 }
