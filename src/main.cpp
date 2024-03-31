@@ -114,7 +114,7 @@ static cmd_t cmd(uint64_t& param1, uint64_t& param2)
 		}
 		if(command == "3")
 		{
-			param1 = 2;
+			param1 = 3;
 			return CMD_REORG;
 		}
 
