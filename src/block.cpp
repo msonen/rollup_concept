@@ -18,10 +18,10 @@ void block_init(block* block)
 void block_copy(block* block_to_be_cpoied, block* b)
 {
 	block_to_be_cpoied->status = b->status;
-	block_to_be_cpoied->data = b->data;
 	for(auto& key: b->data)
 	{
 		block_to_be_cpoied->mt.insert(key.first, key.second);
+		block_to_be_cpoied->data[key.first] = key.second;
 	}
 }
 
