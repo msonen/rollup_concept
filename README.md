@@ -14,7 +14,7 @@ Chainway Senior Protocol Engineer Challenge
 -  A command menu will pop up, which provides following commands.
     -  'p' -> It reads a line from "from_sequencer.txt," creates a block, and then publishes it to the batch. If the batch length is equal to 5, then the batch is pushed to DA and cleared.
     -  'b' -> It completes the current batch to 5 blocks, then pushes it to DA.
-    -  'g' -> Returns a value and state of the given key, usage: g key. It first looks for within the current batch and then seeks in the DA layer if it does not exist.
+    -  'g' -> Returns a value and state of the given key, usage: g key. It first looks for within the current batch and then seeks in the L2 layer if it does not exist.
     -  'h' -> Returns the value at block height for the given key, usage: h key <block>. It looks for the key within L2 blocks.
     -  'hall' -> Returns all history for the given key, usage: hall key. It seeks within the L2 blocks.
     -  1 -> REORG 1
