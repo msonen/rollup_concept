@@ -3,7 +3,7 @@ Chainway Senior Protocol Engineer Challenge
 
 # BUILDING
 
--  Dependencies: gcc, c++
+-  Dependencies: gcc, g++, make
 -  tpye make all
 -  It will produce "chainway_app" file, then type "./chainway_app" to launch the application
 -  type make clean to clean files
