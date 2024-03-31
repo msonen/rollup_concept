@@ -81,7 +81,7 @@ static void help()
 	cout << "'b' -> publish a batch" << endl;
 	cout << "'g' -> Returns a value and state of the given key, usage: g <key>" << endl;
 	cout << "'h' -> Returns the value at block height for the given key, usage: h <key> <block>" << endl;
-	cout << "'hall' -> Returns all history for the given key, usage: h <key>" << endl;
+	cout << "'hall' -> Returns all history for the given key, usage: hall <key>" << endl;
 	cout << "1 -> REORG 1" << endl;
 	cout << "2 -> REORG 2" << endl;
 	cout << "3 -> REORG 3" << endl;
