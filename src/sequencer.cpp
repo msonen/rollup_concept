@@ -40,9 +40,10 @@ static void sequencer_node(char* str, block* b)
 	   char *token = strtok_r(str, delim, &end_str);
 	   uint64_t key = strtoull(token, NULL, 10);
 	   token = strtok_r(NULL, delim, &end_str);
-	   b->mt.insert(key, std::string(token));
-	   b->data[key] = std::string(token);
-	   DBG("K: %ld V: %s\n", key, token);
+	   std::string value(token);
+	   b->mt.insert(key, value);
+	   b->data[key] = value;
+	   DBG("K: %ld V: %s\n", key, value);
 
 }
 
@@ -52,9 +53,12 @@ seq_ret_t sequencer_publish(FILE* file, block* curr_block)
 	size_t s = MAX_LEN_LENGTH;
 	const char delim[2] = ",";
 	char *end_str;
-
-	if(-1 == getline(&ptr, &s, file))
+	ssize_t chars = getline(&ptr, &s, file);
+	if(-1 == chars )
 		return SEQ_RES_CORRUPT;
+
+	if (ptr[chars - 1] == '\n') //remove newline
+	    ptr[chars - 1] = '\0';
 
 	 char *token = strtok_r(ptr, delim, &end_str);
 
