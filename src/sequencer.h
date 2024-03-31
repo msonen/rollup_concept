@@ -10,6 +10,7 @@
 
 #include "stdio.h"
 #include "smt.h"
+#include "block.h"
 #include <unordered_map>
 
 #define MAX_LEN_LENGTH	(size_t)8192
@@ -31,8 +32,7 @@ typedef enum
 
 
 seq_ret_t sequencer_init(const char* seq_file, FILE** file);
-seq_ret_t sequencer_publish(FILE* file, Csmt<>& mt, std::unordered_map<uint64_t, std::string>& ,
-		std::unordered_map<uint64_t, std::string>& map2);
+seq_ret_t sequencer_publish(FILE* file, block* curr_block);
 seq_ret_t sequencer_close(FILE* file);
 
 
