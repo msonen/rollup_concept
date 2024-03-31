@@ -40,13 +40,27 @@ static string state2str(enum FinalizationStatus stat)
 	return string("Unknown");
 }
 
+static void print_block(block* block)
+{
+	cout << "[";
+
+	for(auto& pair : block->data)
+	{
+		cout << "{" << pair.first << ", " << pair.second << "}, ";
+	}
+	cout << "]" << endl;
+}
+
 static seq_ret_t publish_block(FILE* fp, vector<block*>& batch)
 {
 	block *blck = new block;
 	block_init(blck);
 	seq_ret_t ret = sequencer_publish(fp, blck);
 	if(ret == SEQ_SUCCESS)
+	{
 		batch.push_back(blck);
+		print_block(blck);
+	}
 	return ret;
 }
 
