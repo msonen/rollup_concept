@@ -8,8 +8,6 @@
 #ifndef BLOCK_H_
 #define BLOCK_H_
 
-#define DATA_MAX_LEN	64
-#define	DATA_MAX		256
 
 #include <unordered_map>
 #include "smt.h"
@@ -24,10 +22,9 @@ enum FinalizationStatus
 
 typedef struct
 {
-		std::unordered_map<uint64_t, std::string> data;
+		std::unordered_map<uint64_t, std::string> data; // just for changes, not entire data
 		Csmt<> mt;
 		FinalizationStatus status;
-
 }block;
 
 

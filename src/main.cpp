@@ -7,8 +7,8 @@
 
 using namespace std;
 
-#define PUBLISH_COUNT	5
-#define MINER_COUNT		3
+#define BATCH_LENGTH		5
+#define MINER_COUNT			3
 
 
 typedef enum
@@ -196,7 +196,7 @@ int main()
 					cout << "A block published!!" << endl;
 				else
 					cout << "The publishing block failed!!" << endl;
-				if(ret == SEQ_SUCCESS && i == PUBLISH_COUNT)
+				if(ret == SEQ_SUCCESS && i == BATCH_LENGTH)
 				{
 					L2.insert(L2.end(), batch.begin(), batch.end());
 					push_ond_da(batch);
@@ -208,7 +208,7 @@ int main()
 			}
 			case CMD_BATCH:
 			{
-				while(i<PUBLISH_COUNT && ret == SEQ_SUCCESS)
+				while(i<BATCH_LENGTH && ret == SEQ_SUCCESS)
 				{
 					ret = publish_block(fp, batch);
 					++i;
@@ -223,7 +223,7 @@ int main()
 				}
 				else
 				{
-					cout << "The batch publising on DA Failed!!" << endl;
+					cout << "The batch publishing on DA Failed!!" << endl;
 				}
 				break;
 			}
@@ -268,7 +268,7 @@ int main()
 				if(idx >= 0)
 				{
 					if(L2[idx]->mt.contains(par1))
-						cout << "val: " << L2[idx]->data[par1] << endl;
+						cout << "Val: " << L2[idx]->data[par1] << endl;
 					else
 						cout << "Key " << par1 << " not present!" << endl;
 				}

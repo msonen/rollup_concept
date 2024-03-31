@@ -36,5 +36,4 @@ seq_ret_t sequencer_publish(FILE* file, block* curr_block);
 seq_ret_t sequencer_close(FILE* file);
 
 
-
 #endif /* SEQUENCER_H_ */
