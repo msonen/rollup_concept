@@ -21,7 +21,7 @@ Chainway Senior Protocol Engineer Challenge
     -  2 -> REORG 2
     -  3 -> REORG 3
 
-#TEST
+# TEST
 
 -  generator.py can be used to create new test cases.
 -  Example usage: python3 generator.py
