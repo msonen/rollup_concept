@@ -28,8 +28,8 @@ seq_ret_t sequencer_init(const char* seq_file, FILE** file)
 seq_ret_t sequencer_close(FILE* file)
 {
 	if(fclose(file))
-		return SEQ_SUCCESS;
-	return SEQ_RES_CORRUPT;
+		return SEQ_RES_CORRUPT;
+	return SEQ_SUCCESS;
 }
 
 
