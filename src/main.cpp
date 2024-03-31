@@ -66,8 +66,6 @@ static seq_ret_t publish_block(FILE* fp, vector<block*>& batch)
 
 static void push_ond_da(vector<block*>& batch)
 {
-	static int L2_finalized;
-
 	block *blck_batch = new block;
 	block_init(blck_batch);
 
@@ -84,12 +82,13 @@ static void push_ond_da(vector<block*>& batch)
 	if(L1.size()> MINER_COUNT)
 	{
 		L1[L1.size()-MINER_COUNT - 1]->status = DaFinalized;
+		auto it = L2.rbegin();
+		std::advance(it, BATCH_LENGTH*MINER_COUNT);
 		for(int k = 0; k<BATCH_LENGTH; ++k)
 		{
-			L2[L2_finalized]->status = DaFinalized;
-			L2_finalized++;
+			(*it)->status = DaFinalized;
+			std::advance(it, 1);
 		}
-
 	}
 }
 
@@ -251,7 +250,7 @@ int main()
 				cout << "Looking for key: " << par1 << endl;
 				bool found = search(batch, par1, true, true);
 				if(!found)
-					found = search(L1, par1, true, false);
+					found = search(L2, par1, true, false);
 				if(!found)
 					cout << "Key: " << par1 << " not Present!" << endl;
 				break;
@@ -260,7 +259,7 @@ int main()
 			{
 				cout << "Viewing the entire history for key: " << par1 << endl;
 				search(batch, par1, false, true);
-				search(L1, par1, false, false);
+				search(L2, par1, false, false);
 				break;
 			}
 			case CMD_REORG:
@@ -268,11 +267,15 @@ int main()
 				while(par1 > 0 && !L1.empty())
 				{
 					auto block = L1.back();
-
 					if(block->status != DaFinalized)
 					{
 						L1.pop_back();
 						par1--;
+						for(int k = 0; k<BATCH_LENGTH; ++k)
+						{
+							L2.pop_back();
+						}
+
 						cout << "REORG!!" << endl;
 					}
 					else
