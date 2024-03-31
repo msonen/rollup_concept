@@ -50,7 +50,7 @@ static seq_ret_t publish_block(FILE* fp, vector<block*>& batch)
 	return ret;
 }
 
-static int j;
+static int j = 0;
 
 static void push_ond_da(vector<block*>& batch)
 {

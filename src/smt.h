@@ -1,6 +1,8 @@
 #ifndef CSMT_CSMT_H
 #define CSMT_CSMT_H
 
+// https://github.com/gleb-kov/csmt/blob/master/src/csmt.h
+
 #include <cstdint>
 #include <deque>
 #include <memory>
