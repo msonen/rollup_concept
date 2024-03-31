@@ -64,11 +64,8 @@ static seq_ret_t publish_block(FILE* fp, vector<block*>& batch)
 	return ret;
 }
 
-static int j = 0;
-
 static void push_ond_da(vector<block*>& batch)
 {
-	static int mined;
 	static int L2_finalized;
 
 	block *blck_batch = new block;
@@ -84,11 +81,9 @@ static void push_ond_da(vector<block*>& batch)
 
 	L1.push_back(blck_batch);
 
-	if(++j == MINER_COUNT)
+	if(L1.size()> MINER_COUNT)
 	{
-		L1[mined]->status = DaFinalized;
-		mined++;
-		j = 0;
+		L1[L1.size()-MINER_COUNT - 1]->status = DaFinalized;
 		for(int k = 0; k<BATCH_LENGTH; ++k)
 		{
 			L2[L2_finalized]->status = DaFinalized;
@@ -265,17 +260,23 @@ int main()
 			{
 				cout << "Viewing the entire history for key: " << par1 << endl;
 				search(batch, par1, false, true);
-				search(L2, par1, false, false);
+				search(L1, par1, false, false);
 				break;
 			}
 			case CMD_REORG:
 			{
-				while(par1 > 0 && j > 0)
+				while(par1 > 0 && !L1.empty())
 				{
-					L1.pop_back();
-					j--;
-					par1--;
-					cout << "REORG!!" << endl;
+					auto block = L1.back();
+
+					if(block->status != DaFinalized)
+					{
+						L1.pop_back();
+						par1--;
+						cout << "REORG!!" << endl;
+					}
+					else
+						break;
 
 				}
 				if(par1)
