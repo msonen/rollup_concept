@@ -69,22 +69,32 @@ static int j = 0;
 static void push_ond_da(vector<block*>& batch)
 {
 	static int mined;
+	static int L2_finalized;
 
 	block *blck_batch = new block;
 	block_init(blck_batch);
 
 	for(auto& block : batch)
+	{
 		block_copy(blck_batch, block);
+		block->status = DaNotFinalized;
+	}
 
 	blck_batch->status = DaNotFinalized;
 
 	L1.push_back(blck_batch);
 
-	if(j++ == MINER_COUNT)
+	if(++j == MINER_COUNT)
 	{
 		L1[mined]->status = DaFinalized;
 		mined++;
 		j = 0;
+		for(int k = 0; k<BATCH_LENGTH; ++k)
+		{
+			L2[L2_finalized]->status = DaFinalized;
+			L2_finalized++;
+		}
+
 	}
 }
 
@@ -155,21 +165,20 @@ static cmd_t cmd(uint64_t& param1, uint64_t& param2)
 	}
 }
 
-static bool search(vector<block*> blocks, uint64_t key, bool stop_at_first)
+static bool search(vector<block*> blocks, uint64_t key, bool stop_at_first, bool is_batch)
 {
 	auto it = blocks.rbegin();
 	auto const end = blocks.rend();
+	auto const begin = it;
 
 	while(it != end)
 	{
 		if((*it)->mt.contains(key))
 		{
-			cout << "val: " << (*it)->data[key] << endl;
+			cout << (is_batch ? "Block in the Batch Height: " : "Block Height: ") << -distance(it, begin) << " Value: " << (*it)->data[key] << endl;
+			cout << "State: " << state2str((*it)->status) << endl;
 			if(stop_at_first)
-			{
-				cout << "State: " << state2str((*it)->status) << endl;
 				break;
-			}
 		}
 
 		++it;
@@ -245,9 +254,9 @@ int main()
 			case CMD_GET:
 			{
 				cout << "Looking for key: " << par1 << endl;
-				bool found = search(batch, par1, true);
+				bool found = search(batch, par1, true, true);
 				if(!found)
-					found = search(L1, par1, true);
+					found = search(L1, par1, true, false);
 				if(!found)
 					cout << "Key: " << par1 << " not Present!" << endl;
 				break;
@@ -255,8 +264,8 @@ int main()
 			case CMD_HISTORY_ALL:
 			{
 				cout << "Viewing the entire history for key: " << par1 << endl;
-				search(batch, par1, false);
-				search(L2, par1, false);
+				search(batch, par1, false, true);
+				search(L2, par1, false, false);
 				break;
 			}
 			case CMD_REORG:
