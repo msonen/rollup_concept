@@ -94,7 +94,7 @@ static void push_ond_da(vector<block*>& batch)
 
 static void help()
 {
-	cout << "Welcome to Chainway Senior Engineering Challenge!!" << endl;
+	cout << "Welcome to the Simple Roll-up Example!!" << endl;
 	cout << "'p' -> publish a block" << endl;
 	cout << "'b' -> publish a batch" << endl;
 	cout << "'g' -> Returns a value and state of the given key, usage: g <key>" << endl;
